@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 
 import connectDB from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
 
 // Configuration
 
@@ -19,5 +20,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
+app.use("/api/users", userRoutes);
 
 app.listen(PORT, () => console.log(`Running on port: ${PORT}`));
