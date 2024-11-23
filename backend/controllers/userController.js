@@ -4,8 +4,8 @@ import generateToken from "../utils/generateToken.js";
 
 const createUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
-    if (!firstName || !lastName || !email || !password) {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
       throw new Error("Please fill all inputs");
     }
     const userExists = await User.findOne({ email });
@@ -15,8 +15,7 @@ const createUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = new User({
-      firstName,
-      lastName,
+      name,
       email,
       password: hashedPassword,
     });
@@ -25,8 +24,7 @@ const createUser = async (req, res) => {
       generateToken(res, newUser._id);
       res.status(201).json({
         _id: newUser.id,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
+        name: newUser.name,
         email: newUser.email,
         isAdmin: newUser.isAdmin,
       });
@@ -52,8 +50,7 @@ const loginUser = async (req, res) => {
         generateToken(res, existingUser._id);
         res.status(200).json({
           _id: existingUser.id,
-          firstName: existingUser.firstName,
-          lastName: existingUser.lastName,
+          name: newUser.name,
           email: existingUser.email,
           isAdmin: existingUser.isAdmin,
         });
@@ -89,8 +86,7 @@ const getCurrentUserProfile = async (req, res) => {
     if (user) {
       res.json({
         _id: user._id,
-        firstName: existingUser.firstName,
-        lastName: existingUser.lastName,
+        name: newUser.name,
         email: existingUser.email,
       });
     } else {
@@ -106,8 +102,7 @@ const updateCurrentUserProfile = async (req, res) => {
   try {
     const user = await User.find(req.user._id);
     if (user) {
-      user.firstName = req.body.firstName || user.firstName;
-      user.lastName = req.body.lastName || user.lastName;
+      user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
       if (req.body.password) {
         const salt = await bcrypt.genSalt(10);
@@ -117,8 +112,7 @@ const updateCurrentUserProfile = async (req, res) => {
       const updatedUser = await user.save();
       res.json({
         _id: updatedUser._id,
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
+        name: updatedUser.name,
         email: updatedUser.email,
       });
     } else {
