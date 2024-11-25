@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import AuthModal from "./AuthModal";
+import AuthModal from "./auth/AuthModal";
 
 const Layout = () => {
   const [authModal, setAuthModal] = useState(false);
