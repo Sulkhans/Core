@@ -42,20 +42,23 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      const isPasswordVail = await bcrypt.compare(
+      const isPasswordValid = await bcrypt.compare(
         password,
         existingUser.password
       );
-      if (isPasswordVail) {
+      if (isPasswordValid) {
         generateToken(res, existingUser._id);
         res.status(200).json({
           _id: existingUser.id,
-          name: newUser.name,
+          name: existingUser.name,
           email: existingUser.email,
           isAdmin: existingUser.isAdmin,
         });
-        return;
+      } else {
+        res.status(401).json({ message: "Incorrect email or password" });
       }
+    } else {
+      res.status(401).json({ message: "Incorrect email or password" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
