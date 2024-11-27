@@ -13,7 +13,11 @@ const Layout = () => {
     <>
       <Header openAuthModal={openAuthModal} />
       <AuthModal isOpen={authModal} close={closeAuthModal} />
-      <Outlet />
+      <div className="max-w-7xl content-center mx-auto">
+        <div className="px-4 sm:px-6">
+          <Outlet />
+        </div>
+      </div>
       <Footer />
     </>
   );

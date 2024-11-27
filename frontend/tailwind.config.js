@@ -8,9 +8,8 @@ export default {
       },
       colors: {
         core: {
-          main: "#0068b5",
-          light: "#0085e8",
-          dark: "#004b82",
+          main: "#0085e8",
+          dark: "#006ac3",
           white: "#f8fafc",
         },
       },
