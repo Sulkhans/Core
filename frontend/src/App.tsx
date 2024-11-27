@@ -6,6 +6,7 @@ import Loader from "./components/Loader.tsx";
 import Layout from "./components/Layout.tsx";
 import PrivateRoute from "./pages/PrivateRoute.tsx";
 import AdminRoute from "./pages/Admin/AdminRoute.tsx";
+import ErrorPage from "./pages/ErrorPage.tsx";
 import Home from "./pages/Home.tsx";
 import User from "./pages/User/User.tsx";
 import Admin from "./pages/Admin/Admin.tsx";
@@ -22,8 +23,9 @@ const App = () => {
                 <Route path="user" element={<User />} />
               </Route>
               <Route element={<AdminRoute />}>
-                <Route path="admin" element={<Admin />} />
+                <Route path="admin" element={<Admin />}></Route>
               </Route>
+              <Route path="*" element={<ErrorPage />} />
             </Route>
           </Routes>
         </Suspense>

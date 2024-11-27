@@ -13,7 +13,8 @@ const Header = ({ openAuthModal }: Props) => {
   const { userInfo } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const navigateTo = () =>
-    userInfo!.isAdmin ? navigate("/admin") : navigate("/user");
+    userInfo!.isAdmin ? navigate("/admin/profile") : navigate("/user/profile");
+
   return (
     <header>
       <div className="w-full max-w-7xl h-16 content-center mx-auto">
