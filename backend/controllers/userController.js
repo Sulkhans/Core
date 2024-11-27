@@ -4,16 +4,25 @@ import generateToken from "../utils/generateToken.js";
 
 const createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { firstName, lastName, email, password } = req.body;
+    if (!firstName || !lastName || !email || !password)
       throw new Error("Please fill all inputs");
-    }
+    const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!mailRegex.test(email))
+      throw new Error("Please enter a valid email address");
+    if (password.length < 6)
+      throw new Error("Password must be at least 6 characters");
+    const numRegex = /\d/;
+    if (!numRegex.test(password))
+      throw new Error("Password must contain at least one number");
     const userExists = await User.findOne({ email });
-    if (userExists) {
-      res.status(400).send("User with this email already exists");
-    }
+    if (userExists) throw new Error("User with this email already exists");
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+    const name = `${firstName[0].toUpperCase() + firstName.slice(1)} ${
+      lastName[0].toUpperCase() + lastName.slice(1)
+    }`;
     const newUser = new User({
       name,
       email,
@@ -33,7 +42,7 @@ const createUser = async (req, res) => {
       throw new Error("Error saving user data. Please try again.");
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 

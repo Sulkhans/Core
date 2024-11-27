@@ -1,4 +1,9 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { useSignupMutation } from "../../redux/api/usersApiSlice";
+import { setUser } from "../../redux/slices/userSlice";
+import { ErrorType } from "../../types/types";
 
 type Props = {
   toggle: () => void;
@@ -13,6 +18,9 @@ const Signup = ({ toggle, close }: Props) => {
     password: "",
   });
 
+  const dispatch = useDispatch<AppDispatch>();
+  const [signup, { isLoading, isError, error }] = useSignupMutation();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -21,10 +29,20 @@ const Signup = ({ toggle, close }: Props) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-    } catch (error) {}
+      const res = await signup({
+        firstName: form.firstName.toLocaleLowerCase().trim(),
+        lastName: form.lastName.toLocaleLowerCase().trim(),
+        email: form.email.trim(),
+        password: form.password.trim(),
+      }).unwrap();
+      dispatch(setUser({ ...res }));
+      close();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -61,9 +79,19 @@ const Signup = ({ toggle, close }: Props) => {
         onChange={handleChange}
         className="rounded-md px-4 py-2 bg-core-white"
       />
-      <button className="bg-core-main hover:bg-core-dark active:bg-core-dark py-2 rounded-md text-white transition-colors">
+      <button
+        disabled={isLoading}
+        className={`bg-core-main hover:bg-core-dark active:bg-core-dark py-2 rounded-md text-white transition-colors
+        ${isLoading && "!bg-core-dark !bg-opacity-70"}`}
+      >
         Sign up
       </button>
+      {isError && (
+        <span className="text-xs text-red-600 font-medium">
+          {(error as ErrorType)?.data?.message ||
+            "An error occurred. Try again later"}
+        </span>
+      )}
       <p className="text-sm text-pretty">
         Already have an account?{" "}
         <span
