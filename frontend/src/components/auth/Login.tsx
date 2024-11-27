@@ -4,6 +4,8 @@ import { AppDispatch } from "../../redux/store";
 import { useLoginMutation } from "../../redux/api/usersApiSlice";
 import { setUser } from "../../redux/slices/userSlice";
 import { ErrorType } from "../../types/types";
+import Input from "../Input";
+import Button from "../Button";
 
 type Props = {
   toggle: () => void;
@@ -43,28 +45,20 @@ const Login = ({ toggle, close }: Props) => {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-center">
       <h1>Log in to your account</h1>
-      <input
+      <Input
         name="email"
         placeholder="Email"
         value={form.email}
         onChange={handleChange}
-        className="rounded-md px-4 py-2 bg-core-white"
       />
-      <input
-        name="password"
+      <Input
         type="password"
+        name="password"
         placeholder="Password"
         value={form.password}
         onChange={handleChange}
-        className="rounded-md px-4 py-2 bg-core-white"
       />
-      <button
-        disabled={isLoading}
-        className={`bg-core-main hover:bg-core-dark active:bg-core-dark py-2 rounded-md text-white transition-colors
-          ${isLoading && "!bg-core-dark !bg-opacity-70"}`}
-      >
-        Log in
-      </button>
+      <Button value="Log in" disabled={isLoading} />
       {isError && (
         <span className="text-xs text-red-600 font-medium">
           {(error as ErrorType)?.data?.message ||
