@@ -32,7 +32,7 @@ const Login = ({ toggle, close }: Props) => {
       return;
     try {
       const res = await login({
-        email: form.email,
+        email: form.email.toLocaleLowerCase(),
         password: form.password,
       }).unwrap();
       dispatch(setUser({ ...res }));

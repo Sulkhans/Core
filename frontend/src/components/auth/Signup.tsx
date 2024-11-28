@@ -18,6 +18,7 @@ const Signup = ({ toggle, close }: Props) => {
     lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const dispatch = useDispatch<AppDispatch>();
@@ -37,8 +38,9 @@ const Signup = ({ toggle, close }: Props) => {
       const res = await signup({
         firstName: form.firstName.toLocaleLowerCase().trim(),
         lastName: form.lastName.toLocaleLowerCase().trim(),
-        email: form.email.trim(),
+        email: form.email.trim().toLocaleLowerCase(),
         password: form.password.trim(),
+        confirmPassword: form.confirmPassword.trim(),
       }).unwrap();
       dispatch(setUser({ ...res }));
       close();
@@ -75,6 +77,13 @@ const Signup = ({ toggle, close }: Props) => {
         name="password"
         placeholder="Password"
         value={form.password}
+        onChange={handleChange}
+      />
+      <Input
+        type="password"
+        name="confirmPassword"
+        placeholder="Confirm password"
+        value={form.confirmPassword}
         onChange={handleChange}
       />
       <Button value="Sign up" disabled={isLoading} />

@@ -4,12 +4,13 @@ import generateToken from "../utils/generateToken.js";
 
 const createUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
-    if (!firstName || !lastName || !email || !password)
+    const { firstName, lastName, email, password, confirmPassword } = req.body;
+    if (!firstName || !lastName || !email || !password || !confirmPassword)
       throw new Error("Please fill all inputs");
     const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!mailRegex.test(email))
       throw new Error("Please enter a valid email address");
+    if (password !== confirmPassword) throw new Error("Passwords do not match");
     if (password.length < 6)
       throw new Error("Password must be at least 6 characters");
     const numRegex = /\d/;
@@ -25,7 +26,7 @@ const createUser = async (req, res) => {
     }`;
     const newUser = new User({
       name,
-      email,
+      email: email.toLowerCase(),
       password: hashedPassword,
     });
     try {
@@ -112,25 +113,28 @@ const getCurrentUserProfile = async (req, res) => {
 
 const updateCurrentUserProfile = async (req, res) => {
   try {
-    const user = await User.find(req.user._id);
-    if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
-      if (req.body.password) {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
-        user.password = hashedPassword;
-      }
-      const updatedUser = await user.save();
-      res.json({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-      });
-    } else {
-      res.status(404);
-      throw new Error("User not found");
-    }
+    const user = await User.findOne(req.user._id);
+    const { firstName, lastName, email, password } = req.body;
+
+    if (!firstName || !lastName || !email || !password)
+      throw new Error("Please fill all inputs");
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) throw new Error("Password is incorrect");
+    const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!mailRegex.test(email))
+      throw new Error("Please enter a valid email address");
+
+    const name = `${firstName[0].toUpperCase() + firstName.slice(1)} ${
+      lastName[0].toUpperCase() + lastName.slice(1)
+    }`;
+    user.name = name;
+    user.email = email;
+    const updatedUser = await user.save();
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
