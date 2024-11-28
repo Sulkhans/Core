@@ -8,6 +8,7 @@ import {
   updateCurrentUserProfile,
   deleteUserById,
   getUserById,
+  changePassword,
 } from "../controllers/userController.js";
 import {
   authenticate,
@@ -26,6 +27,7 @@ router
   .route("/profile")
   .get(authenticate, getCurrentUserProfile)
   .put(authenticate, updateCurrentUserProfile);
+router.put("/password", authenticate, changePassword);
 router
   .route("/:id")
   .get(authenticate, authenticateAdmin, getUserById)

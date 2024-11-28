@@ -136,7 +136,35 @@ const updateCurrentUserProfile = async (req, res) => {
       email: updatedUser.email,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const user = await User.findOne(req.user._id);
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+    if (!isPasswordValid) throw new Error("Current password is incorrect");
+    if (newPassword !== confirmPassword)
+      throw new Error("New passwords do not match");
+    if (newPassword.length < 6)
+      throw new Error("Password must be at least 6 characters");
+    const numRegex = /\d/;
+    if (!numRegex.test(newPassword))
+      throw new Error("Password must contain at least one number");
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedPassword;
+    await user.save();
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -175,6 +203,7 @@ export {
   logoutUser,
   getAllUsers,
   getCurrentUserProfile,
+  changePassword,
   updateCurrentUserProfile,
   deleteUserById,
   getUserById,

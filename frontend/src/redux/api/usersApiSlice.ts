@@ -34,6 +34,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/password`,
+        method: "PUT",
+        body: data,
+        credentials: "include",
+      }),
+    }),
   }),
 });
 
@@ -42,4 +50,5 @@ export const {
   useSignupMutation,
   useLogoutMutation,
   useUpdateMutation,
+  useChangePasswordMutation,
 } = userApiSlice;
