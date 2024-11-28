@@ -1,15 +1,16 @@
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Suspense } from "react";
+import { lazy, Suspense } from "react";
 import Loader from "./components/Loader.tsx";
 import Layout from "./components/Layout.tsx";
-import PrivateRoute from "./pages/PrivateRoute.tsx";
-import AdminRoute from "./pages/Admin/AdminRoute.tsx";
-import ErrorPage from "./pages/ErrorPage.tsx";
 import Home from "./pages/Home.tsx";
-import User from "./pages/User/User.tsx";
-import Admin from "./pages/Admin/Admin.tsx";
+import ProfileLayout from "./pages/ProfileLayout.tsx";
+import Profile from "./pages/Profile.tsx";
+
+const AdminRoute = lazy(() => import("./pages/AdminRoute.tsx"));
+const PrivateRoute = lazy(() => import("./pages/PrivateRoute.tsx"));
+const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const App = () => {
   return (
@@ -20,10 +21,34 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route element={<PrivateRoute />}>
-                <Route path="user" element={<User />} />
+                <Route
+                  path="user"
+                  element={
+                    <ProfileLayout
+                      sections={["profile", "password", "orders"]}
+                    />
+                  }
+                >
+                  <Route path="profile" element={<Profile />} />
+                </Route>
               </Route>
               <Route element={<AdminRoute />}>
-                <Route path="admin" element={<Admin />}></Route>
+                <Route
+                  path="admin"
+                  element={
+                    <ProfileLayout
+                      sections={[
+                        "profile",
+                        "password",
+                        "users",
+                        "orders",
+                        "products",
+                      ]}
+                    />
+                  }
+                >
+                  <Route path="profile" element={<Profile />} />
+                </Route>
               </Route>
               <Route path="*" element={<ErrorPage />} />
             </Route>
