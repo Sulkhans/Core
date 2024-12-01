@@ -13,3 +13,7 @@ input {
   width: 0px;
   height: 0px;
 }
+
+.Toastify__toast--success {
+  background-color: #0085e8 !important;
+}

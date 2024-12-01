@@ -73,7 +73,7 @@ const ProfileLayout = ({ sections }: Props) => {
         </h1>
       )}
       <hr className="border border-core-main rounded-full mb-4" />
-      <div className="relative grid grid-cols-1 sm:grid-cols-[224px_1fr] sm:gap-x-4 md:gap-x-20">
+      <div className="relative grid grid-cols-1 sm:grid-cols-[224px_1fr] sm:gap-x-4 lg:gap-x-10">
         <Transition
           show={isMobileView ? isSidebarVisible : true}
           enter="ease-in duration-300"
@@ -83,7 +83,7 @@ const ProfileLayout = ({ sections }: Props) => {
           leaveFrom="translate-x-0"
           leaveTo="-translate-x-full"
         >
-          <aside className="absolute sm:static w-full flex flex-col gap-2 font-medium text-lg text-core-main bg-white">
+          <aside className="absolute sm:static w-full flex flex-col gap-2 font-medium text-lg text-core-main bg-white z-30">
             {sections.map((section, i) => (
               <button
                 key={i}
@@ -107,7 +107,7 @@ const ProfileLayout = ({ sections }: Props) => {
             </button>
           </aside>
         </Transition>
-        <main className="mt-2">
+        <main className="mt-2 overflow-x-auto">
           <Outlet />
         </main>
       </div>
