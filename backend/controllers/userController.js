@@ -84,15 +84,6 @@ const logoutUser = async (req, res) => {
   }
 };
 
-const getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 const getCurrentUserProfile = async (req, res) => {
   try {
     const user = await User.find(req.user._id);
@@ -168,12 +159,21 @@ const changePassword = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const deleteUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (user) {
       await User.deleteOne({ _id: user._id });
-      res.json({ message: "User removed successfully" });
+      res.json({ message: "User has been deleted successfully" });
     } else {
       res.status(404);
       throw new Error("User not found");
@@ -183,11 +183,13 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-const getUserById = async (req, res) => {
+const updateUserAdmin = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select("-password");
+    const user = await User.findById(req.params.id);
     if (user) {
-      res.json(user);
+      user.isAdmin = !user.isAdmin;
+      await user.save();
+      res.status(200).json({ message: "User status has been updated" });
     } else {
       res.status(404);
       throw new Error("User not found");
@@ -206,5 +208,5 @@ export {
   changePassword,
   updateCurrentUserProfile,
   deleteUserById,
-  getUserById,
+  updateUserAdmin,
 };

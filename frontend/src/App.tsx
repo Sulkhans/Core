@@ -8,6 +8,7 @@ import Home from "./pages/Home.tsx";
 import ProfileLayout from "./pages/ProfileLayout.tsx";
 import Profile from "./pages/Profile.tsx";
 import Password from "./pages/Password.tsx";
+import Users from "./pages/Users.tsx";
 
 const AdminRoute = lazy(() => import("./pages/AdminRoute.tsx"));
 const PrivateRoute = lazy(() => import("./pages/PrivateRoute.tsx"));
@@ -51,6 +52,7 @@ const App = () => {
                 >
                   <Route path="profile" element={<Profile />} />
                   <Route path="password" element={<Password />} />
+                  <Route path="users" element={<Users />} />
                 </Route>
               </Route>
               <Route path="*" element={<ErrorPage />} />
