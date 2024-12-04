@@ -3,11 +3,13 @@ import {
   useGetUsersQuery,
   useUpdateUserAdminMutation,
 } from "../redux/api/usersApiSlice";
-import Loader from "../components/Loader";
-import Trash from "../assets/trash.svg?react";
+import { useEffect } from "react";
+import { ErrorType } from "../types/types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ErrorType } from "../types/types";
+import Loader from "../components/Loader";
+import Trash from "../assets/trash.svg?react";
+import Reload from "../assets/reload.svg?react";
 
 type UserType = {
   _id: string;
@@ -20,6 +22,17 @@ const Users = () => {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery({});
   const [deleteUser] = useDeleteUserMutation();
   const [updateUserAdmin] = useUpdateUserAdminMutation();
+
+  useEffect(() => {
+    if (error) {
+      toast.error("Failed to load users", {
+        position: "bottom-right",
+        autoClose: 5000,
+        closeOnClick: true,
+        closeButton: false,
+      });
+    }
+  }, [error]);
 
   const handleDelete = async (id: string) => {
     if (window.confirm("Delete selected user?")) {
@@ -67,8 +80,16 @@ const Users = () => {
     <div>
       {isLoading ? (
         <Loader />
+      ) : error ? (
+        <ToastContainer theme="colored" />
       ) : (
-        <div>
+        <>
+          <button
+            onClick={refetch}
+            className="p-2.5 rounded-md mb-4 bg-core-main hover:bg-core-dark active:bg-core-dark transition-colors"
+          >
+            <Reload className="size-5 stroke-white" />
+          </button>
           <table className="w-full rounded-md overflow-hidden">
             <thead>
               <tr className="*:py-4 *:px-6 bg-core-main text-white *:font-medium *:text-start">
@@ -107,7 +128,7 @@ const Users = () => {
             </tbody>
           </table>
           <ToastContainer theme="colored" />
-        </div>
+        </>
       )}
     </div>
   );
