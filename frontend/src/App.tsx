@@ -5,13 +5,14 @@ import { lazy, Suspense } from "react";
 import Loader from "./components/Loader.tsx";
 import Layout from "./components/Layout.tsx";
 import Home from "./pages/Home.tsx";
+import PrivateRoute from "./pages/PrivateRoute.tsx";
 import ProfileLayout from "./pages/ProfileLayout.tsx";
 import Profile from "./pages/Profile.tsx";
-import Password from "./pages/Password.tsx";
-import Users from "./pages/Users.tsx";
 
 const AdminRoute = lazy(() => import("./pages/AdminRoute.tsx"));
-const PrivateRoute = lazy(() => import("./pages/PrivateRoute.tsx"));
+const Password = lazy(() => import("./pages/Password.tsx"));
+const Users = lazy(() => import("./pages/Users.tsx"));
+const Categories = lazy(() => import("./pages/Categories.tsx"));
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const App = () => {
@@ -44,8 +45,9 @@ const App = () => {
                         "profile",
                         "password",
                         "users",
-                        "orders",
+                        "categories",
                         "products",
+                        "orders",
                       ]}
                     />
                   }
@@ -53,6 +55,7 @@ const App = () => {
                   <Route path="profile" element={<Profile />} />
                   <Route path="password" element={<Password />} />
                   <Route path="users" element={<Users />} />
+                  <Route path="categories" element={<Categories />} />
                 </Route>
               </Route>
               <Route path="*" element={<ErrorPage />} />
