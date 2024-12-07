@@ -3,18 +3,18 @@ import {
   useDeleteCategoryMutation,
   useGetCategoriesQuery,
   useUpdateCategoryMutation,
-} from "../redux/api/categoryApiSlice";
+} from "../../redux/api/categoryApiSlice";
 import { useEffect, useState } from "react";
-import { ErrorType } from "../types/types";
+import { ErrorType } from "../../types/types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "../components/Loader";
-import Reload from "../assets/reload.svg?react";
-import New from "../assets/plus.svg?react";
-import Trash from "../assets/trash.svg?react";
-import Edit from "../assets/edit.svg?react";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Loader from "../../components/Loader";
+import Reload from "../../assets/reload.svg?react";
+import New from "../../assets/plus.svg?react";
+import Trash from "../../assets/trash.svg?react";
+import Edit from "../../assets/edit.svg?react";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 
 type CategoryType = {
   _id: string;

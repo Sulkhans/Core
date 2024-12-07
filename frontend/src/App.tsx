@@ -5,14 +5,15 @@ import { lazy, Suspense } from "react";
 import Loader from "./components/Loader.tsx";
 import Layout from "./components/Layout.tsx";
 import Home from "./pages/Home.tsx";
-import PrivateRoute from "./pages/PrivateRoute.tsx";
+import PrivateRoute from "./pages/user/PrivateRoute.tsx";
 import ProfileLayout from "./pages/ProfileLayout.tsx";
-import Profile from "./pages/Profile.tsx";
+import Profile from "./pages/user/Profile.tsx";
 
-const AdminRoute = lazy(() => import("./pages/AdminRoute.tsx"));
-const Password = lazy(() => import("./pages/Password.tsx"));
-const Users = lazy(() => import("./pages/Users.tsx"));
-const Categories = lazy(() => import("./pages/Categories.tsx"));
+const Password = lazy(() => import("./pages/user/Password.tsx"));
+const AdminRoute = lazy(() => import("./pages/admin/AdminRoute.tsx"));
+const Users = lazy(() => import("./pages/admin/Users.tsx"));
+const Categories = lazy(() => import("./pages/admin/Categories.tsx"));
+const Products = lazy(() => import("./pages/admin/Products.tsx"));
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const App = () => {
@@ -56,6 +57,7 @@ const App = () => {
                   <Route path="password" element={<Password />} />
                   <Route path="users" element={<Users />} />
                   <Route path="categories" element={<Categories />} />
+                  <Route path="products" element={<Products />} />
                 </Route>
               </Route>
               <Route path="*" element={<ErrorPage />} />

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useChangePasswordMutation } from "../redux/api/usersApiSlice";
-import { ErrorType } from "../types/types";
-import Button from "../components/Button";
-import Input from "../components/Input";
+import { useChangePasswordMutation } from "../../redux/api/usersApiSlice";
+import { ErrorType } from "../../types/types";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
 
 const Password = () => {
   const [form, setForm] = useState({

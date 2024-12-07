@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../redux/store";
-import { useUpdateMutation } from "../redux/api/usersApiSlice";
-import { setUser } from "../redux/slices/userSlice";
-import { ErrorType } from "../types/types";
-import Button from "../components/Button";
-import Input from "../components/Input";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useUpdateMutation } from "../../redux/api/usersApiSlice";
+import { setUser } from "../../redux/slices/userSlice";
+import { ErrorType } from "../../types/types";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
 
 const Profile = () => {
   const { userInfo } = useSelector((state: RootState) => state.user);

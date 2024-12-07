@@ -73,7 +73,7 @@ const ProfileLayout = ({ sections }: Props) => {
         </h1>
       )}
       <hr className="border border-core-main rounded-full mb-4" />
-      <div className="relative grid grid-cols-1 sm:grid-cols-[224px_1fr] sm:gap-x-4 lg:gap-x-10">
+      <div className="relative grid grid-cols-1 sm:grid-cols-[224px_1fr] sm:gap-x-2 lg:gap-x-10">
         <Transition
           show={isMobileView ? isSidebarVisible : true}
           enter="ease-in duration-300"
@@ -107,7 +107,7 @@ const ProfileLayout = ({ sections }: Props) => {
             </button>
           </aside>
         </Transition>
-        <main className="mt-2 overflow-x-auto">
+        <main className="mt-2 pl-2 overflow-x-auto">
           <Outlet />
         </main>
       </div>

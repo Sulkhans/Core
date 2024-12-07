@@ -2,14 +2,14 @@ import {
   useDeleteUserMutation,
   useGetUsersQuery,
   useUpdateUserAdminMutation,
-} from "../redux/api/usersApiSlice";
+} from "../../redux/api/usersApiSlice";
 import { useEffect } from "react";
-import { ErrorType } from "../types/types";
+import { ErrorType } from "../../types/types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "../components/Loader";
-import Trash from "../assets/trash.svg?react";
-import Reload from "../assets/reload.svg?react";
+import Loader from "../../components/Loader";
+import Trash from "../../assets/trash.svg?react";
+import Reload from "../../assets/reload.svg?react";
 
 type UserType = {
   _id: string;
