@@ -1,5 +1,13 @@
 import express from "express";
-import { createProduct } from "../controllers/productController.js";
+import {
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getAllProducts,
+  getProducts,
+  getProductById,
+  getNewProducts,
+} from "../controllers/productController.js";
 import {
   authenticate,
   authenticateAdmin,
@@ -7,6 +15,16 @@ import {
 
 const router = express.Router();
 
-router.route("/").post(createProduct);
+router
+  .route("/")
+  .get(getProducts)
+  .post(authenticate, authenticateAdmin, createProduct);
+router
+  .route("/id")
+  .get(getProductById)
+  .put(authenticate, authenticateAdmin, updateProduct)
+  .delete(authenticate, authenticateAdmin, deleteProduct);
+router.get("/all", authenticate, authenticateAdmin, getAllProducts);
+router.get("/new", getNewProducts);
 
 export default router;
