@@ -19,12 +19,12 @@ router
   .route("/")
   .get(getProducts)
   .post(authenticate, authenticateAdmin, createProduct);
+router.get("/all", authenticate, authenticateAdmin, getAllProducts);
+router.get("/new", getNewProducts);
 router
-  .route("/id")
+  .route("/:id")
   .get(getProductById)
   .put(authenticate, authenticateAdmin, updateProduct)
   .delete(authenticate, authenticateAdmin, deleteProduct);
-router.get("/all", authenticate, authenticateAdmin, getAllProducts);
-router.get("/new", getNewProducts);
 
 export default router;
