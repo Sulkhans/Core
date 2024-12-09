@@ -1,21 +1,12 @@
-import formidable from "formidable";
 import { Product, Phone, Laptop } from "../models/Product.js";
 import Category from "../models/Category.js";
 
 const createProduct = async (req, res) => {
   try {
-    const form = formidable({ keepExtensions: true, multiples: false });
-    const { fields } = await new Promise((resolve, reject) => {
-      form.parse(req, (err, fields) => {
-        if (err) reject(new Error("Error parsing form data"));
-        resolve({ fields });
-      });
-    });
-
-    const { name, image, brand, price, inStock, details } = fields;
+    const { name, image, brand, price, inStock, details } = req.body;
     if (!name || !image || !brand || !price || !inStock || !details)
       throw new Error("All fields are required");
-    const category = await Category.findOne({ name: fields.category });
+    const category = await Category.findOne({ name: req.body.category });
     if (!category) throw new Error("Invalid product category");
 
     const productModels = {
@@ -28,9 +19,9 @@ const createProduct = async (req, res) => {
       image,
       brand,
       price: parseFloat(price),
-      category: category._id,
       inStock: parseInt(inStock),
-      details: JSON.parse(details),
+      category: category._id,
+      details: details,
     }).save();
     res.status(201).json({ message: "Product has been created successfully!" });
   } catch (error) {
@@ -40,31 +31,19 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    const form = formidable({ keepExtensions: true, multiples: false });
-    const { fields } = await new Promise((resolve, reject) => {
-      form.parse(req, (err, fields) => {
-        if (err) reject(new Error("Error parsing form data"));
-        resolve({ fields });
-      });
-    });
-
-    const { name, image, brand, price, inStock, details } = fields;
-    if (!name || !image || !brand || !price || !inStock || !details)
+    const { name, image, brand, price, inStock, details } = req.body;
+    if (!name || !brand || !price || !inStock || !details)
       throw new Error("All fields are required");
-    const category = await Category.findOne({ name: fields.category });
-    if (!category) throw new Error("Invalid product category");
-
     const product = await Product.findById(req.params.id);
     if (!product) throw new Error("Product was not found");
     product.name = name;
-    product.image = image || product.image;
+    product.image = image;
     product.brand = brand;
     product.price = parseFloat(price);
     product.inStock = parseInt(inStock);
-    product.details = JSON.parse(details);
-
+    product.details = details;
     await product.save();
-    res.status(201).json({ message: "Product has been created successfully!" });
+    res.status(200).json({ message: "Product has been updated successfully!" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
