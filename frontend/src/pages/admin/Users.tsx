@@ -5,8 +5,7 @@ import {
 } from "../../redux/api/usersApiSlice";
 import { useEffect } from "react";
 import { ErrorType } from "../../types/types";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import Trash from "../../assets/trash.svg?react";
 import Reload from "../../assets/reload.svg?react";
@@ -25,12 +24,7 @@ const Users = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error("Failed to load users", {
-        position: "bottom-right",
-        autoClose: 5000,
-        closeOnClick: true,
-        closeButton: false,
-      });
+      toast.error("Failed to load users");
     }
   }, [error]);
 
@@ -38,19 +32,9 @@ const Users = () => {
     if (window.confirm("Delete selected user?")) {
       try {
         const res = await deleteUser(id).unwrap();
-        toast.success(res.message, {
-          position: "bottom-right",
-          autoClose: 3000,
-          closeOnClick: true,
-          closeButton: false,
-        });
+        toast.success(res.message);
       } catch (error) {
-        toast.error((error as ErrorType)?.data?.message, {
-          position: "bottom-right",
-          autoClose: 3000,
-          closeOnClick: true,
-          closeButton: false,
-        });
+        toast.error((error as ErrorType)?.data?.message);
       }
     }
   };
@@ -59,78 +43,63 @@ const Users = () => {
     if (window.confirm("Update selected user?")) {
       try {
         const res = await updateUserAdmin(id).unwrap();
-        toast.success(res.message, {
-          position: "bottom-right",
-          autoClose: 3000,
-          closeOnClick: true,
-          closeButton: false,
-        });
+        toast.success(res.message);
       } catch (error) {
-        toast.error((error as ErrorType)?.data?.message, {
-          position: "bottom-right",
-          autoClose: 3000,
-          closeOnClick: true,
-          closeButton: false,
-        });
+        toast.error((error as ErrorType)?.data?.message);
       }
     }
   };
 
-  return (
-    <div>
-      {isLoading ? (
-        <Loader />
-      ) : error ? (
-        <ToastContainer theme="colored" />
-      ) : (
-        <>
-          <button
-            onClick={refetch}
-            className="p-2.5 rounded-md mb-4 bg-core-main hover:bg-core-dark active:bg-core-dark transition-colors"
-          >
-            <Reload className="size-5 stroke-white" />
-          </button>
-          <table className="w-full rounded-md overflow-hidden">
-            <thead>
-              <tr className="*:py-4 *:px-6 bg-core-main text-white *:font-medium *:text-start">
-                <th>ID</th>
-                <th>Email</th>
-                <th>Name</th>
-                <th className="!px-0 !text-center">Admin</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user: UserType) => (
-                <tr
-                  key={user._id}
-                  className="*:py-4 *:px-6 text-sm text-nowrap even:bg-core-white hover:bg-core-main hover:bg-opacity-10 transition-all"
+  return isLoading ? (
+    <Loader />
+  ) : (
+    !error && (
+      <>
+        <button
+          onClick={refetch}
+          className="p-2.5 rounded-md mb-4 bg-core-main hover:bg-core-dark active:bg-core-dark transition-colors"
+        >
+          <Reload className="size-5 stroke-white" />
+        </button>
+        <table className="w-full rounded-md overflow-hidden">
+          <thead>
+            <tr className="*:py-4 *:px-6 bg-core-main text-white *:font-medium *:text-start">
+              <th>ID</th>
+              <th>Email</th>
+              <th>Name</th>
+              <th className="!px-0 !text-center">Admin</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user: UserType) => (
+              <tr
+                key={user._id}
+                className="*:py-4 *:px-6 text-sm text-nowrap even:bg-core-white hover:bg-core-main hover:bg-opacity-10 transition-all"
+              >
+                <td>{user._id}</td>
+                <td>{user.email}</td>
+                <td>{user.name}</td>
+                <td className="text-center">
+                  <input
+                    type="checkbox"
+                    checked={user.isAdmin}
+                    onChange={() => handleAdminUpdate(user._id)}
+                    className="cursor-pointer"
+                  />
+                </td>
+                <td
+                  onClick={() => handleDelete(user._id)}
+                  className="group cursor-pointer"
                 >
-                  <td>{user._id}</td>
-                  <td>{user.email}</td>
-                  <td>{user.name}</td>
-                  <td className="text-center">
-                    <input
-                      type="checkbox"
-                      checked={user.isAdmin}
-                      onChange={() => handleAdminUpdate(user._id)}
-                      className="cursor-pointer"
-                    />
-                  </td>
-                  <td
-                    onClick={() => handleDelete(user._id)}
-                    className="group cursor-pointer"
-                  >
-                    <Trash className="size-5 mx-auto stroke-slate-400 group-hover:stroke-red-600 transition-colors" />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <ToastContainer theme="colored" />
-        </>
-      )}
-    </div>
+                  <Trash className="size-5 mx-auto stroke-slate-400 group-hover:stroke-red-600 transition-colors" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    )
   );
 };
 

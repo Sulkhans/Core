@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { Slide, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Header from "./Header";
-import Footer from "./Footer";
 import AuthModal from "./auth/AuthModal";
+import Footer from "./Footer";
 
 const Layout = () => {
   const [authModal, setAuthModal] = useState(false);
@@ -18,6 +20,14 @@ const Layout = () => {
           <Outlet />
         </div>
       </div>
+      <ToastContainer
+        theme="colored"
+        position="bottom-right"
+        autoClose={5000}
+        closeButton={false}
+        closeOnClick={true}
+        transition={Slide}
+      />
       <Footer />
     </>
   );
