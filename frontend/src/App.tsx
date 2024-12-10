@@ -14,6 +14,8 @@ const AdminRoute = lazy(() => import("./pages/admin/AdminRoute.tsx"));
 const Users = lazy(() => import("./pages/admin/Users.tsx"));
 const Categories = lazy(() => import("./pages/admin/Categories.tsx"));
 const Products = lazy(() => import("./pages/admin/Products.tsx"));
+const NewProduct = lazy(() => import("./pages/admin/NewProduct.tsx"));
+const EditProduct = lazy(() => import("./pages/admin/EditProduct.tsx"));
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const App = () => {
@@ -58,6 +60,11 @@ const App = () => {
                   <Route path="users" element={<Users />} />
                   <Route path="categories" element={<Categories />} />
                   <Route path="products" element={<Products />} />
+                  <Route path="products/new" element={<NewProduct />} />
+                  <Route
+                    path="products/:category/:id"
+                    element={<EditProduct />}
+                  />
                 </Route>
               </Route>
               <Route path="*" element={<ErrorPage />} />
