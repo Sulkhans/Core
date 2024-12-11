@@ -8,9 +8,14 @@ import { defaultDetails } from "../../constants/defaults";
 import { BASE_URL } from "../../redux/constants";
 import {
   PhoneType,
+  TabType,
   LaptopType,
   ProductBaseType,
   ErrorType,
+  MonitorType,
+  TvType,
+  ConsoleType,
+  HeadphonesType,
 } from "../../types/types";
 import { toast } from "react-toastify";
 import Input from "../../components/Input";
@@ -27,9 +32,16 @@ const NewProduct = () => {
     inStock: 1,
     category: "",
   });
-  const [details, setDetails] = useState<PhoneType | LaptopType>(
-    defaultDetails["phones"]
-  );
+  const [details, setDetails] = useState<
+    | PhoneType
+    | TabType
+    | LaptopType
+    | MonitorType
+    | TvType
+    | ConsoleType
+    | HeadphonesType
+  >(defaultDetails["phones"]);
+
   const { data: categories } = useGetCategoriesQuery({});
 
   const handleBaseChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,4 +1,13 @@
-import { Product, Phone, Laptop } from "../models/Product.js";
+import {
+  Product,
+  Phone,
+  Tab,
+  Laptop,
+  Monitor,
+  Tv,
+  Console,
+  Headphone,
+} from "../models/Product.js";
 import Category from "../models/Category.js";
 
 const createProduct = async (req, res) => {
@@ -11,7 +20,12 @@ const createProduct = async (req, res) => {
 
     const productModels = {
       phones: Phone,
+      tabs: Tab,
       laptops: Laptop,
+      monitors: Monitor,
+      tvs: Tv,
+      consoles: Console,
+      headphones: Headphone,
     };
     const productModel = productModels[category.name];
     await new productModel({
