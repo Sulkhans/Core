@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
+        sintony: ["Sintony", "sans-serif"],
       },
       colors: {
         core: {
