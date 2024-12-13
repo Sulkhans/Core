@@ -90,15 +90,70 @@ const getAllProducts = async (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
+    const filter = {};
     const productsPerPage = 12;
-    const keyword = req.query.keyword
-      ? { name: { $regex: req.query.keyword, $options: "i" } }
-      : {};
-    const productCount = await Product.countDocuments({ ...keyword });
-    const products = await Product.find({ ...keyword }).limit(productsPerPage);
-    res
-      .status(200)
-      .json({ products, pages: Math.ceil(productCount / productsPerPage) });
+
+    const { page, brand, priceMin, priceMax, ...details } = req.query;
+    const currentPage = parseInt(page) || 1;
+    const category = await Category.findOne({ name: req.params.category });
+    if (!category) throw new Error("Invalid product category");
+
+    filter.category = category;
+    if (brand) filter.brand = brand;
+    if (priceMin || priceMax) {
+      filter.price = {};
+      if (priceMin) filter.price.$gte = parseFloat(priceMin);
+      if (priceMax) filter.price.$lte = parseFloat(priceMax);
+    }
+
+    if (Object.keys(details).length > 0) {
+      const detailsFilters = {};
+      Object.entries(details).forEach(([key, value]) => {
+        if (value.includes(",")) {
+          detailsFilters[`details.${key}`] = {
+            $in: value.split(",").map((v) => {
+              const trimmedV = v.trim();
+              const isNumeric = /^-?\d+(\.\d+)?$/.test(trimmedV);
+              return isNumeric ? parseFloat(trimmedV) : trimmedV;
+            }),
+          };
+        } else {
+          const isNumeric = /^-?\d+(\.\d+)?$/.test(value);
+          detailsFilters[`details.${key}`] = isNumeric
+            ? parseFloat(value)
+            : value;
+        }
+      });
+      Object.assign(filter, detailsFilters);
+    }
+
+    const productCount = await Product.countDocuments({ ...filter });
+    const totalPages = Math.ceil(productCount / productsPerPage);
+    const products = await Product.find({ ...filter })
+      .limit(productsPerPage)
+      .skip((page - 1) * productsPerPage);
+
+    res.status(200).json({ products, currentPage, totalPages });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const searchProducts = async (req, res) => {
+  try {
+    if (!req.query.search) {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+    const productsPerPage = 12;
+    const page = parseInt(req.query.page) || 1;
+    const search = { name: { $regex: req.query.search, $options: "i" } };
+    const productCount = await Product.countDocuments(search);
+    const totalPages = Math.ceil(productCount / productsPerPage);
+    const products = await Product.find(search)
+      .limit(productsPerPage)
+      .skip((page - 1) * productsPerPage);
+
+    res.status(200).json({ products, currentPage: page, totalPages });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -124,12 +179,23 @@ const getNewProducts = async (req, res) => {
   }
 };
 
+const getRandomProducts = async (req, res) => {
+  try {
+    const products = await Product.aggregate([{ $sample: { size: 6 } }]);
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export {
   createProduct,
   updateProduct,
   deleteProduct,
   getAllProducts,
   getProducts,
+  searchProducts,
   getProductById,
   getNewProducts,
+  getRandomProducts,
 };

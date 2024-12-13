@@ -5,8 +5,10 @@ import {
   deleteProduct,
   getAllProducts,
   getProducts,
+  searchProducts,
   getProductById,
   getNewProducts,
+  getRandomProducts,
 } from "../controllers/productController.js";
 import {
   authenticate,
@@ -15,12 +17,12 @@ import {
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(getProducts)
-  .post(authenticate, authenticateAdmin, createProduct);
-router.get("/all", authenticate, authenticateAdmin, getAllProducts);
-router.get("/new", getNewProducts);
+router.post("/", authenticate, authenticateAdmin, createProduct);
+router.get("/get", searchProducts);
+router.get("/get/new", getNewProducts);
+router.get("/get/random", getRandomProducts);
+router.get("/get/all", authenticate, authenticateAdmin, getAllProducts);
+router.get("/get/:category", getProducts);
 router
   .route("/:id")
   .get(getProductById)
