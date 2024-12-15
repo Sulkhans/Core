@@ -6,6 +6,7 @@ export type ErrorType = {
 };
 
 export type ProductBaseType = {
+  _id?: string;
   name: string;
   image: string;
   brand: string;
@@ -131,4 +132,17 @@ export type HeadphonesType = {
   batteryDuration: number;
   chargingTime: number;
   weight: number;
+};
+
+export type CartItem = ProductBaseType & { quantity: number };
+
+export type ShippingAddressType = {
+  fullName: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  phoneNumber: string;
 };
