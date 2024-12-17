@@ -12,8 +12,8 @@ import Category from "../models/Category.js";
 
 const createProduct = async (req, res) => {
   try {
-    const { name, image, brand, price, inStock, details } = req.body;
-    if (!name || !image || !brand || !price || !inStock || !details)
+    const { name, images, brand, price, inStock, details } = req.body;
+    if (!name || !images || !brand || !price || !inStock || !details)
       throw new Error("All fields are required");
     const category = await Category.findOne({ name: req.body.category });
     if (!category) throw new Error("Invalid product category");
@@ -30,7 +30,7 @@ const createProduct = async (req, res) => {
     const productModel = productModels[category.name];
     await new productModel({
       name,
-      image,
+      images,
       brand,
       price: parseFloat(price),
       inStock: parseInt(inStock),
@@ -45,13 +45,13 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    const { name, image, brand, price, inStock, details } = req.body;
+    const { name, images, brand, price, inStock, details } = req.body;
     if (!name || !brand || !price || !inStock || !details)
       throw new Error("All fields are required");
     const product = await Product.findById(req.params.id);
     if (!product) throw new Error("Product was not found");
     product.name = name;
-    product.image = image;
+    product.images = images;
     product.brand = brand;
     product.price = parseFloat(price);
     product.inStock = parseInt(inStock);
