@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import {
   useCreateProductMutation,
+  useDeleteImageMutation,
   useUploadImageMutation,
 } from "../../redux/api/productApiSlice";
 import { useGetCategoriesQuery } from "../../redux/api/categoryApiSlice";
@@ -23,10 +24,11 @@ import Button from "../../components/Button";
 
 const NewProduct = () => {
   const [uploadImage] = useUploadImageMutation();
+  const [deleteImage] = useDeleteImageMutation();
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const [base, setBase] = useState<ProductBaseType | null>({
     name: "",
-    image: "",
+    images: [],
     brand: "",
     price: 0,
     inStock: 1,
@@ -68,10 +70,28 @@ const NewProduct = () => {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const formData = new FormData();
-      formData.append("image", e.target.files[0]);
+      Array.from(e.target.files).forEach((file) => {
+        formData.append("images", file);
+      });
       try {
         const res = await uploadImage(formData).unwrap();
-        setBase((prev) => ({ ...prev!, image: res.image }));
+        setBase((prev) => ({
+          ...prev!,
+          images: [...prev!.images, ...res.images],
+        }));
+        toast.success(res.message);
+      } catch (error) {
+        toast.error((error as ErrorType)?.data?.message || "Error");
+      }
+    }
+  };
+
+  const handleImageDelete = async (path: string) => {
+    if (window.confirm("Delete selected image?")) {
+      try {
+        const res = await deleteImage(path.split("/")[2]).unwrap();
+        const images = base!.images.filter((img) => img !== path);
+        setBase((prev) => ({ ...prev!, images }));
         toast.success(res.message);
       } catch (error) {
         toast.error((error as ErrorType)?.data?.message || "Error");
@@ -103,28 +123,25 @@ const NewProduct = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {base && (
-        <div className="flex items-center justify-center w-[30rem] min-w-[30rem] aspect-square p-10 rounded-md border-2 border-core-main">
-          {base.image ? (
-            <div className="flex flex-col items-center gap-8">
-              <img src={BASE_URL + base.image} className="max-h-[20rem]" />
-              <Button
-                value="Change Image"
-                onClick={() => setBase((prev) => ({ ...prev!, image: "" }))}
-                className="px-6"
-              />
-            </div>
-          ) : (
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={(e) => handleImageUpload(e)}
-              className="w-60 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:text-core-white file:bg-core-main hover:file:bg-core-dark file:transition-colors"
-            />
-          )}
-        </div>
-      )}
+      <label className="text-core-main font-medium mr-6">Images</label>
+      <input
+        multiple
+        type="file"
+        name="image"
+        accept="image/*"
+        onChange={(e) => handleImageUpload(e)}
+        className="w-60 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:text-core-white file:bg-core-main hover:file:bg-core-dark file:transition-colors"
+      />
+      <div className="flex flex-wrap justify-center gap-4 md:gap-6 my-6">
+        {base?.images.map((image, i) => (
+          <img
+            key={i}
+            src={BASE_URL + image}
+            className="w-[9rem] md:w-[13rem] aspect-square cursor-pointer"
+            onClick={() => handleImageDelete(image)}
+          />
+        ))}
+      </div>
       <div className="flex flex-col w-full gap-1 mt-4">
         {base && (
           <>

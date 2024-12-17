@@ -8,7 +8,7 @@ export type ErrorType = {
 export type ProductBaseType = {
   _id?: string;
   name: string;
-  image: string;
+  images: string[];
   brand: string;
   price: number;
   category: string;
