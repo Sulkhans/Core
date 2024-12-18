@@ -37,37 +37,41 @@ const ProductCard = ({ product }: Props) => {
     if (!inCart) {
       dispatch(addToCart({ ...product, quantity: 1 }));
       toast.success("Product was added to the cart");
+    } else {
+      const toastId = "product-in-cart-toast";
+      if (!toast.isActive(toastId)) {
+        toast.success("Product is already in the cart", { toastId });
+      }
     }
   };
 
   return (
-    <Link to={`/product/${product._id}`}>
-      <div className="min-w-40 max-w-40">
-        <img
-          src={BASE_URL + product.image}
-          draggable={false}
-          className="size-40"
-        />
-        <div className="flex justify-between items-center mt-4">
-          <p className="font-semibold font-sintony text-lg text-core-dark">
-            <span className="mr-0.5">$</span>
-            {product.price}
-          </p>
-          <button onClick={handleFavorite}>
-            <Heart
-              className={`${isFavorite && "fill-core-dark"} stroke-core-dark`}
-            />
-          </button>
-        </div>
-        <p className="text-sm truncate mt-2 pb-3">{product.name}</p>
+    <Link
+      to={`/product/${product._id}`}
+      className="min-w-40 max-w-40 sm:min-w-44 sm:max-w-44"
+    >
+      <img
+        src={BASE_URL + product.images[0]}
+        draggable={false}
+        className="size-32 sm:size-40 mx-auto mb-2"
+      />
+      <p className="font-semibold font-sintony text-lg text-core-main">
+        <span className="mr-0.5">$</span>
+        {product.price}
+      </p>
+      <p className="text-sm truncate font-medium mt-0.5">{product.name}</p>
+      <div className="flex gap-2 mt-2">
+        <button onClick={handleFavorite}>
+          <Heart
+            className={`${isFavorite && "fill-core-main"} stroke-core-main`}
+          />
+        </button>
         <button
           onClick={handleCart}
-          className="w-full p-2 rounded-md text-sm text-white bg-core-main hover:bg-core-dark active:bg-core-dark transition-colors"
+          className="w-full text-nowrap p-2 rounded-full text-sm text-white bg-core-main hover:bg-core-dark active:bg-core-dark transition-colors duration-300"
         >
-          <span className="inline-block mb-0.5">
-            {inCart ? "Already in cart" : "Add to cart"}
-          </span>
-          {!inCart && <Cart className="inline ml-2 mb-0.5 size-5" />}
+          <span className="inline-block mb-0.5">Add to cart</span>
+          <Cart className="inline ml-2 mb-0.5 size-5" />
         </button>
       </div>
     </Link>
