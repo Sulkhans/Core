@@ -38,6 +38,10 @@ export const productApiSlice = apiSlice.injectEndpoints({
       query: () => ({ url: `${PRODUCT_URL}/get/all`, credentials: "include" }),
       providesTags: ["Product"],
     }),
+    searchProducts: builder.query({
+      query: (query) => ({ url: `${PRODUCT_URL}/get?search=${query}` }),
+      keepUnusedDataFor: 5,
+    }),
     createProduct: builder.mutation({
       query: (data) => ({
         url: `${PRODUCT_URL}`,
@@ -88,6 +92,7 @@ export const {
   useGetNewProductsQuery,
   useGetRandomProductsQuery,
   useGetAllProductsQuery,
+  useSearchProductsQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,

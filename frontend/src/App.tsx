@@ -9,6 +9,7 @@ import PrivateRoute from "./pages/user/PrivateRoute.tsx";
 import ProfileLayout from "./pages/ProfileLayout.tsx";
 import Profile from "./pages/user/Profile.tsx";
 import Product from "./pages/Product.tsx";
+import Search from "./pages/Search.tsx";
 
 const Password = lazy(() => import("./pages/user/Password.tsx"));
 const AdminRoute = lazy(() => import("./pages/admin/AdminRoute.tsx"));
@@ -27,6 +28,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
+              <Route path="/search" element={<Search />} />
               <Route path="/product/:id" element={<Product />} />
               <Route element={<PrivateRoute />}>
                 <Route

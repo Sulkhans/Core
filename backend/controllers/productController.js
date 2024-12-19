@@ -144,16 +144,10 @@ const searchProducts = async (req, res) => {
     if (!req.query.search) {
       return res.status(400).json({ message: "Search query is required" });
     }
-    const productsPerPage = 12;
-    const page = parseInt(req.query.page) || 1;
     const search = { name: { $regex: req.query.search, $options: "i" } };
     const productCount = await Product.countDocuments(search);
-    const totalPages = Math.ceil(productCount / productsPerPage);
-    const products = await Product.find(search)
-      .limit(productsPerPage)
-      .skip((page - 1) * productsPerPage);
-
-    res.status(200).json({ products, currentPage: page, totalPages });
+    const products = await Product.find(search);
+    res.status(200).json({ count: productCount, products });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
