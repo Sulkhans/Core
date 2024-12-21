@@ -9,6 +9,7 @@ import {
   getProductById,
   getNewProducts,
   getRandomProducts,
+  getFilterOptions,
 } from "../controllers/productController.js";
 import {
   authenticate,
@@ -22,6 +23,7 @@ router.get("/get", searchProducts);
 router.get("/get/new", getNewProducts);
 router.get("/get/random", getRandomProducts);
 router.get("/get/all", authenticate, authenticateAdmin, getAllProducts);
+router.get("/get/filterOptions", getFilterOptions);
 router.get("/get/:category", getProducts);
 router
   .route("/:id")

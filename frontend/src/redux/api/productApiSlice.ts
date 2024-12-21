@@ -4,23 +4,17 @@ import { apiSlice } from "./apiSlice";
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ category, page, brand, priceMin, priceMax, ...details }) => {
-        const queryParams = new URLSearchParams();
-        if (brand) queryParams.append("brand", brand);
-        if (priceMin) queryParams.append("priceMin", priceMin);
-        if (priceMax) queryParams.append("priceMax", priceMax);
-        if (details) {
-          Object.entries(details).forEach(([key, value]) => {
-            queryParams.append(key, String(value));
-          });
-        }
-        return {
-          url: `${PRODUCT_URL}/get/${category}?page=${page}&${queryParams.toString()}`,
-          method: "GET",
-        };
-      },
-      keepUnusedDataFor: 5,
+      query: ({ category, params }) => ({
+        url: `${PRODUCT_URL}/get/${category}?${params || ""}`,
+      }),
+      keepUnusedDataFor: 15,
       providesTags: ["Product"],
+    }),
+    getFilterOptions: builder.query({
+      query: (category) => ({
+        url: `${PRODUCT_URL}/get/filterOptions?category=${category}`,
+      }),
+      keepUnusedDataFor: 15 * 60,
     }),
     getProductById: builder.query({
       query: (id) => ({ url: `${PRODUCT_URL}/${id}` }),
@@ -88,6 +82,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetProductsQuery,
+  useGetFilterOptionsQuery,
   useGetProductByIdQuery,
   useGetNewProductsQuery,
   useGetRandomProductsQuery,

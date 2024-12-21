@@ -153,6 +153,60 @@ const searchProducts = async (req, res) => {
   }
 };
 
+const getFilterOptions = async (req, res) => {
+  try {
+    const category = await Category.findOne({ name: req.query.category });
+    if (!category) throw new Error("Invalid product category");
+
+    const products = await Product.find({ category });
+    const excludeKeys = [
+      "_id",
+      "__v",
+      "__t",
+      "createdAt",
+      "updatedAt",
+      "name",
+      "images",
+      "category",
+      "inStock",
+      "details",
+      "color",
+      "model",
+      "dimensions",
+      "weight",
+    ];
+
+    const filters = {};
+    const addToFilters = (source) => {
+      Object.entries(source).forEach(([key, value]) => {
+        if (excludeKeys.includes(key)) return;
+        if (!filters[key]) filters[key] = new Set();
+        filters[key].add(value);
+      });
+    };
+    products.forEach((product) => {
+      addToFilters(product.toObject());
+      if (product.details) {
+        addToFilters(product.details);
+      }
+    });
+
+    const filterOptions = {};
+    Object.keys(filters).forEach((key) => {
+      filterOptions[key] = Array.from(filters[key]).sort((a, b) => {
+        if (typeof a === "number" && typeof b === "number") {
+          return a - b;
+        } else {
+          return a.toString().localeCompare(b.toString());
+        }
+      });
+    });
+    res.json(filterOptions);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -189,6 +243,7 @@ export {
   getAllProducts,
   getProducts,
   searchProducts,
+  getFilterOptions,
   getProductById,
   getNewProducts,
   getRandomProducts,
