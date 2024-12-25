@@ -91,15 +91,19 @@ const getAllProducts = async (req, res) => {
 const getProducts = async (req, res) => {
   try {
     const filter = {};
-    const productsPerPage = 12;
+    const productsPerPage = 24;
 
-    const { page, brand, priceMin, priceMax, ...details } = req.query;
+    const { page, brand, priceMin, priceMax, sort, ...details } = req.query;
     const currentPage = parseInt(page) || 1;
     const category = await Category.findOne({ name: req.params.category });
     if (!category) throw new Error("Invalid product category");
 
     filter.category = category;
-    if (brand) filter.brand = brand;
+    if (brand) {
+      brand.includes(",")
+        ? (filter.brand = { $in: brand.split(",") })
+        : (filter.brand = brand);
+    }
     if (priceMin || priceMax) {
       filter.price = {};
       if (priceMin) filter.price.$gte = parseFloat(priceMin);
@@ -118,10 +122,14 @@ const getProducts = async (req, res) => {
             }),
           };
         } else {
-          const isNumeric = /^-?\d+(\.\d+)?$/.test(value);
-          detailsFilters[`details.${key}`] = isNumeric
-            ? parseFloat(value)
-            : value;
+          if (/^-?\d+(\.\d+)?$/.test(value)) {
+            value = parseFloat(value);
+          } else if (value === "true") {
+            value = true;
+          } else if (value === "false") {
+            value = false;
+          }
+          detailsFilters[`details.${key}`] = value;
         }
       });
       Object.assign(filter, detailsFilters);
@@ -130,6 +138,7 @@ const getProducts = async (req, res) => {
     const productCount = await Product.countDocuments({ ...filter });
     const totalPages = Math.ceil(productCount / productsPerPage);
     const products = await Product.find({ ...filter })
+      .sort(sort === "asc" ? { price: 1 } : { price: -1 })
       .limit(productsPerPage)
       .skip((page - 1) * productsPerPage);
 
