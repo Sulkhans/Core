@@ -10,6 +10,7 @@ import ProfileLayout from "./pages/ProfileLayout.tsx";
 import Profile from "./pages/user/Profile.tsx";
 import Product from "./pages/Product.tsx";
 import Search from "./pages/Search.tsx";
+import Category from "./pages/Category.tsx";
 
 const Password = lazy(() => import("./pages/user/Password.tsx"));
 const AdminRoute = lazy(() => import("./pages/admin/AdminRoute.tsx"));
@@ -71,6 +72,7 @@ const App = () => {
                   />
                 </Route>
               </Route>
+              <Route path="/:category" element={<Category />} />
               <Route path="*" element={<ErrorPage />} />
             </Route>
           </Routes>
