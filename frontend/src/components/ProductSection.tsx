@@ -12,7 +12,7 @@ const ProductSection = ({ link, heading, products }: Props) => {
   return (
     <section>
       <h2 className="mb-4 text-xl font-sintony font-semibold text-core-main">
-        {link ? <Link to={`/${link}`}>{heading}</Link> : heading}
+        {link ? <Link to={`/${link}?page=1`}>{heading}</Link> : heading}
       </h2>
       <div className="flex justify-between gap-8 overflow-x-auto">
         {products &&
