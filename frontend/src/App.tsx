@@ -19,6 +19,8 @@ const Categories = lazy(() => import("./pages/admin/Categories.tsx"));
 const Products = lazy(() => import("./pages/admin/Products.tsx"));
 const NewProduct = lazy(() => import("./pages/admin/NewProduct.tsx"));
 const EditProduct = lazy(() => import("./pages/admin/EditProduct.tsx"));
+const Cart = lazy(() => import("./pages/Cart.tsx"));
+const Wishlist = lazy(() => import("./pages/Wishlist.tsx"));
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const App = () => {
@@ -30,6 +32,8 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/product/:id" element={<Product />} />
               <Route element={<PrivateRoute />}>
                 <Route
