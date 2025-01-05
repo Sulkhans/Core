@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { BASE_URL } from "../redux/constants";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import {
   clearCart,
   removeFromCart,
@@ -10,21 +10,26 @@ import {
 import Button from "../components/Button";
 import Icon from "../assets/cart.svg?react";
 
+type ContextType = {
+  openAuthModal: () => void;
+};
+
 const Cart = () => {
+  const { openAuthModal } = useOutletContext<ContextType>();
+  const { userInfo } = useSelector((state: RootState) => state.user);
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
-  const handleQuantity = (
-    e: React.MouseEvent,
-    id: string,
-    quantity: number
-  ) => {
+  const handleItem = (e: React.MouseEvent, id: string, quantity: number) => {
     e.preventDefault();
     e.stopPropagation();
     quantity === 0
       ? dispatch(removeFromCart(id))
       : dispatch(updateQuantity({ id, quantity }));
   };
+
+  const handleUser = () => (userInfo ? navigate("/shipping") : openAuthModal());
 
   return cartItems.length > 0 ? (
     <main>
@@ -55,9 +60,7 @@ const Cart = () => {
               </div>
               <div className="flex py-1 ml-auto mr-4 rounded-full bg-core-main text-white *:px-4">
                 <button
-                  onClick={(e) =>
-                    handleQuantity(e, item._id!, item.quantity - 1)
-                  }
+                  onClick={(e) => handleItem(e, item._id!, item.quantity - 1)}
                 >
                   -
                 </button>
@@ -65,9 +68,7 @@ const Cart = () => {
                   {item.quantity}
                 </p>
                 <button
-                  onClick={(e) =>
-                    handleQuantity(e, item._id!, item.quantity + 1)
-                  }
+                  onClick={(e) => handleItem(e, item._id!, item.quantity + 1)}
                 >
                   +
                 </button>
@@ -75,28 +76,34 @@ const Cart = () => {
             </Link>
           ))}
         </section>
-        <section className="flex flex-col p-6 pt-3 rounded-2xl bg-core-white">
-          <table className="font-semibold text-core-main border-separate border-spacing-y-3 mb-2">
-            <tbody>
-              <tr>
-                <td>Total Items</td>
-                <td className="font-sintony">
-                  {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
-                </td>
-              </tr>
-              <tr>
-                <td>Total Price</td>
-                <td className="font-sintony">
-                  <span className="mr-0.5">$</span>
-                  {cartItems.reduce(
-                    (acc, item) => acc + item.quantity * item.price,
-                    0
-                  )}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <Button value="Checkout" onClick={() => {}} />
+        <section>
+          <div className="h-24 px-6 rounded-2xl bg-core-white content-center">
+            <table className="w-full mx-auto font-semibold text-core-main border-separate border-spacing-y-2">
+              <tbody>
+                <tr>
+                  <td>Total Items</td>
+                  <td className="font-sintony">
+                    {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Total Price</td>
+                  <td className="font-sintony">
+                    <span className="mr-0.5">$</span>
+                    {cartItems.reduce(
+                      (acc, item) => acc + item.quantity * item.price,
+                      0
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Button
+            value="Proceed to Checkout"
+            onClick={handleUser}
+            className="mt-4 !rounded-2xl w-full"
+          />
         </section>
       </div>
     </main>

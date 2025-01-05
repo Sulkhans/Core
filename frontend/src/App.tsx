@@ -21,6 +21,7 @@ const NewProduct = lazy(() => import("./pages/admin/NewProduct.tsx"));
 const EditProduct = lazy(() => import("./pages/admin/EditProduct.tsx"));
 const Cart = lazy(() => import("./pages/Cart.tsx"));
 const Wishlist = lazy(() => import("./pages/Wishlist.tsx"));
+const Shipping = lazy(() => import("./pages/Shipping.tsx"));
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/product/:id" element={<Product />} />
               <Route element={<PrivateRoute />}>
+                <Route path="/shipping" element={<Shipping />} />
                 <Route
                   path="user"
                   element={
