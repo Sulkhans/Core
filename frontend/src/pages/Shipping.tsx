@@ -95,11 +95,11 @@ const Shipping = () => {
           </Fragment>
         ))}
         {error && (
-          <p className="text-xs text-center font-semibold text-red-600 mb-2">
+          <p className="text-xs text-center font-semibold text-red-600 mt-2">
             {error}
           </p>
         )}
-        <Button value="Continue" className="mt-2" />
+        <Button value="Continue" className="mt-6 !rounded-full" />
       </form>
     </main>
   );

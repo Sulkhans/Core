@@ -15,6 +15,7 @@ const createOrder = async (req, res) => {
       return {
         product: clientItem._id,
         name: orderItem.name,
+        images: orderItem.images,
         price: orderItem.price,
         quantity: clientItem.quantity,
       };

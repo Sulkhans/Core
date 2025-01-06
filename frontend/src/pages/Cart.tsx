@@ -33,11 +33,11 @@ const Cart = () => {
 
   return cartItems.length > 0 ? (
     <main>
-      <div className="mb-4 md:mx-3 flex justify-between items-center text-core-main font-semibold">
-        <h1>Shopping Cart</h1>
+      <div className="flex justify-between items-center mb-3 md:mx-2 font-semibold text-core-main">
+        <h1 className="text-lg">Shopping Cart</h1>
         <button onClick={() => dispatch(clearCart())}>Clear cart</button>
       </div>
-      <div className="grid md:grid-cols-[1fr_300px] gap-4 md:gap-8">
+      <div className="grid md:grid-cols-[1fr_360px] gap-4 md:gap-6">
         <section className="space-y-4">
           {cartItems.map((item) => (
             <Link
@@ -102,7 +102,7 @@ const Cart = () => {
           <Button
             value="Proceed to Checkout"
             onClick={handleUser}
-            className="mt-4 !rounded-2xl w-full"
+            className="mt-4 !rounded-full w-full"
           />
         </section>
       </div>

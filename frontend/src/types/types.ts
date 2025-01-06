@@ -135,3 +135,11 @@ export type HeadphonesType = {
 };
 
 export type CartItem = ProductBaseType & { quantity: number };
+export type ShippingAddressType = {
+  address: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  phoneNumber: string;
+};
