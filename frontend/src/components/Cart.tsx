@@ -1,26 +1,28 @@
+import { Link, useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { BASE_URL } from "../redux/constants";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import {
   clearCart,
   removeFromCart,
   updateQuantity,
 } from "../redux/slices/cartSlice";
-import Button from "../components/Button";
-import Icon from "../assets/cart.svg?react";
+import { BASE_URL } from "../redux/constants";
+import Button from "./Button";
 
 type ContextType = {
   openAuthModal: () => void;
 };
 
-const Cart = () => {
+type Props = {
+  next: () => void;
+};
+
+const Cart = ({ next }: Props) => {
   const { openAuthModal } = useOutletContext<ContextType>();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const { cartItems } = useSelector((state: RootState) => state.cart);
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
 
+  const dispatch = useDispatch<AppDispatch>();
   const handleItem = (e: React.MouseEvent, id: string, quantity: number) => {
     e.preventDefault();
     e.stopPropagation();
@@ -29,9 +31,7 @@ const Cart = () => {
       : dispatch(updateQuantity({ id, quantity }));
   };
 
-  const handleUser = () => (userInfo ? navigate("/shipping") : openAuthModal());
-
-  return cartItems.length > 0 ? (
+  return (
     <main>
       <div className="flex justify-between items-center mb-3 md:mx-2 font-semibold text-core-main">
         <h1 className="text-lg">Shopping Cart</h1>
@@ -101,18 +101,12 @@ const Cart = () => {
           </div>
           <Button
             value="Proceed to Checkout"
-            onClick={handleUser}
+            onClick={userInfo ? next : openAuthModal}
             className="mt-4 !rounded-full w-full"
           />
         </section>
       </div>
     </main>
-  ) : (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap flex flex-col items-center text-xl font-semibold text-core-main">
-      <Icon className="size-14 mb-2 stroke-[1.75px]" />
-      <p>Your Cart Is Empty</p>
-      <p>Find Something You Want</p>
-    </div>
   );
 };
 

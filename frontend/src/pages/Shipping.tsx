@@ -1,17 +1,18 @@
 import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { useNavigate } from "react-router-dom";
 import { setShippingAddress } from "../redux/slices/cartSlice";
+import { RootState } from "../redux/store";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
-const Shipping = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+type Props = {
+  next: () => void;
+};
 
-  const cart = useSelector((state: RootState) => state.cart);
-  const { shippingAddress } = cart;
+const Shipping = ({ next }: Props) => {
+  const dispatch = useDispatch();
+  const { shippingAddress } = useSelector((state: RootState) => state.cart);
+
   const [shipping, setShipping] = useState({
     address: shippingAddress?.address || "",
     city: shippingAddress?.city || "",
@@ -69,7 +70,7 @@ const Shipping = () => {
     }
     setError("");
     dispatch(setShippingAddress(shipping));
-    navigate("/order");
+    next();
   };
 
   const format = (text: string) =>

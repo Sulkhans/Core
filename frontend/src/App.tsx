@@ -19,10 +19,9 @@ const Categories = lazy(() => import("./pages/admin/Categories.tsx"));
 const Products = lazy(() => import("./pages/admin/Products.tsx"));
 const NewProduct = lazy(() => import("./pages/admin/NewProduct.tsx"));
 const EditProduct = lazy(() => import("./pages/admin/EditProduct.tsx"));
-const Cart = lazy(() => import("./pages/Cart.tsx"));
+const CartPage = lazy(() => import("./pages/CartPage.tsx"));
 const Wishlist = lazy(() => import("./pages/Wishlist.tsx"));
-const Shipping = lazy(() => import("./pages/Shipping.tsx"));
-const PlaceOrder = lazy(() => import("./pages/PlaceOrder.tsx"));
+const Order = lazy(() => import("./pages/Order.tsx"));
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const App = () => {
@@ -34,12 +33,10 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="/search" element={<Search />} />
-              <Route path="/cart" element={<Cart />} />
+              <Route path="/cart" element={<CartPage />} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/product/:id" element={<Product />} />
               <Route element={<PrivateRoute />}>
-                <Route path="/shipping" element={<Shipping />} />
-                <Route path="/order" element={<PlaceOrder />} />
                 <Route
                   path="user"
                   element={
