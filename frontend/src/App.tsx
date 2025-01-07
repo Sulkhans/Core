@@ -19,9 +19,11 @@ const Categories = lazy(() => import("./pages/admin/Categories.tsx"));
 const Products = lazy(() => import("./pages/admin/Products.tsx"));
 const NewProduct = lazy(() => import("./pages/admin/NewProduct.tsx"));
 const EditProduct = lazy(() => import("./pages/admin/EditProduct.tsx"));
+const Orders = lazy(() => import("./pages/admin/Orders.tsx"));
 const CartPage = lazy(() => import("./pages/CartPage.tsx"));
 const Wishlist = lazy(() => import("./pages/Wishlist.tsx"));
 const Order = lazy(() => import("./pages/Order.tsx"));
+const UserOrders = lazy(() => import("./pages/UserOrders.tsx"));
 const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const App = () => {
@@ -37,7 +39,6 @@ const App = () => {
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/product/:id" element={<Product />} />
               <Route element={<PrivateRoute />}>
-                <Route path="/order/:id" element={<Order />} />
                 <Route
                   path="user"
                   element={
@@ -48,7 +49,9 @@ const App = () => {
                 >
                   <Route path="profile" element={<Profile />} />
                   <Route path="password" element={<Password />} />
+                  <Route path="orders" element={<UserOrders />} />
                 </Route>
+                <Route path="/order/:id" element={<Order />} />
               </Route>
               <Route element={<AdminRoute />}>
                 <Route
@@ -76,6 +79,7 @@ const App = () => {
                     path="products/:category/:id"
                     element={<EditProduct />}
                   />
+                  <Route path="orders" element={<Orders />} />
                 </Route>
               </Route>
               <Route path="/:category" element={<Category />} />
