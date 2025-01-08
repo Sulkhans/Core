@@ -50,11 +50,13 @@ const ProductCard = ({ product }: Props) => {
       to={`/product/${product._id}`}
       className="min-w-40 max-w-40 sm:min-w-44 sm:max-w-44"
     >
-      <img
-        src={BASE_URL + product.images[0]}
-        draggable={false}
-        className="size-32 sm:size-40 mx-auto mb-2"
-      />
+      <div className="size-32 sm:size-40 content-center ml-4 mb-2">
+        <img
+          src={BASE_URL + product.images[0]}
+          draggable={false}
+          className="max-w-32 max-h-32 sm:max-h-40 sm:max-w-40"
+        />
+      </div>
       <p className="font-semibold font-sintony text-lg text-core-main">
         <span className="mr-0.5">$</span>
         {product.price}

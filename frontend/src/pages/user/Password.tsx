@@ -50,7 +50,7 @@ const Password = () => {
         name="currentPassword"
         value={form.currentPassword}
         onChange={handleChange}
-        className="mb-4 py-3.5 px-4 focus:ring focus:ring-core-main transition-all"
+        className="mb-4 py-2.5 px-3 focus:ring focus:ring-core-main transition-all"
       />
       <label className="text-core-main font-medium">New Password</label>
       <Input
@@ -58,7 +58,7 @@ const Password = () => {
         name="newPassword"
         value={form.newPassword}
         onChange={handleChange}
-        className="mb-4 py-3.5 px-4 focus:ring focus:ring-core-main transition-all"
+        className="mb-4 py-2.5 px-3 focus:ring focus:ring-core-main transition-all"
       />
       <label className="text-core-main font-medium">Confirm New Password</label>
       <Input
@@ -66,7 +66,7 @@ const Password = () => {
         name="confirmPassword"
         value={form.confirmPassword}
         onChange={handleChange}
-        className="mb-4 py-3.5 px-4 focus:ring focus:ring-core-main transition-all"
+        className="mb-4 py-2.5 px-3 focus:ring focus:ring-core-main transition-all"
       />
       {isError && (
         <span className="text-xs text-red-600 font-medium">
@@ -82,7 +82,7 @@ const Password = () => {
       <Button
         disabled={isLoading}
         value="Change Password"
-        className="py-3.5 mt-4"
+        className="py-2.5 mt-4"
       />
     </form>
   );

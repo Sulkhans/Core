@@ -51,7 +51,7 @@ const Profile = () => {
         value={form.email}
         placeholder="Email"
         onChange={handleChange}
-        className="mb-4 py-3.5 px-4 focus:ring focus:ring-core-main transition-all"
+        className="mb-4 py-2.5 px-3 focus:ring focus:ring-core-main transition-all"
       />
       <label className="text-core-main font-medium">First name</label>
       <Input
@@ -59,7 +59,7 @@ const Profile = () => {
         value={form.firstName}
         placeholder="First name"
         onChange={handleChange}
-        className="mb-4 py-3.5 px-4 focus:ring focus:ring-core-main transition-all"
+        className="mb-4 py-2.5 px-3 focus:ring focus:ring-core-main transition-all"
       />
       <label className="text-core-main font-medium">Last name</label>
       <Input
@@ -67,7 +67,7 @@ const Profile = () => {
         value={form.lastName}
         placeholder="Last name"
         onChange={handleChange}
-        className="mb-4 py-3.5 px-4 focus:ring focus:ring-core-main transition-all"
+        className="mb-4 py-2.5 px-3 focus:ring focus:ring-core-main transition-all"
       />
       <label className="text-core-main font-medium">Current password</label>
       <Input
@@ -75,7 +75,7 @@ const Profile = () => {
         value={password}
         placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
-        className="mb-4 py-3.5 px-4 focus:ring focus:ring-core-main transition-all"
+        className="mb-4 py-2.5 px-3 focus:ring focus:ring-core-main transition-all"
       />
       {isError && (
         <span className="text-xs text-red-600 font-medium">
@@ -88,7 +88,7 @@ const Profile = () => {
           Profile has been updated successfully
         </span>
       )}
-      <Button disabled={isLoading} value="Update" className="py-3.5 mt-4" />
+      <Button disabled={isLoading} value="Update" className="py-2.5 mt-3" />
     </form>
   );
 };

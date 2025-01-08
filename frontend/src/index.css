@@ -19,9 +19,6 @@ input {
   background-color: #0071dc !important;
 }
 
-.swiper-button-prev,
-.swiper-button-next {
-  --swiper-navigation-size: 24px;
-  --swiper-navigation-sides-offset: 0px;
-  --swiper-navigation-color: #0071dc;
+.swiper-pagination-bullet-active {
+  background-color: #0071dc !important;
 }

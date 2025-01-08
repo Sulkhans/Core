@@ -58,7 +58,7 @@ const ProfileLayout = ({ sections }: Props) => {
     str.charAt(0).toUpperCase() + str.slice(1);
 
   return (
-    <>
+    <div className="max-h-[calc(100vh-120px)] sm:max-h-none overflow-hidden">
       {isMobileView && !isSidebarVisible ? (
         <button
           onClick={() => setIsSidebarVisible(true)}
@@ -73,7 +73,7 @@ const ProfileLayout = ({ sections }: Props) => {
         </h1>
       )}
       <hr className="border border-core-main rounded-full mb-4" />
-      <div className="relative grid grid-cols-1 sm:grid-cols-[224px_1fr] sm:gap-x-2 lg:gap-x-10">
+      <div className="relative grid grid-cols-1 sm:grid-cols-[13rem_1fr] sm:gap-x-2 lg:gap-x-10">
         <Transition
           show={isMobileView ? isSidebarVisible : true}
           enter="ease-in duration-300"
@@ -83,15 +83,13 @@ const ProfileLayout = ({ sections }: Props) => {
           leaveFrom="translate-x-0"
           leaveTo="-translate-x-full"
         >
-          <aside className="absolute sm:static w-full flex flex-col gap-2 font-medium text-lg text-core-main bg-white z-30">
+          <aside className="absolute sm:static w-full h-full flex flex-col gap-2 font-medium text-lg text-core-main bg-white z-30">
             {sections.map((section, i) => (
               <button
                 key={i}
                 onClick={() => handleSection(section)}
-                className={`flex items-center justify-between py-2 px-4 rounded-md hover:text-core-dark hover:bg-core-white transition-colors ${
-                  !isMobileView &&
-                  activeSection === section &&
-                  "text-core-dark font-semibold"
+                className={`flex items-center justify-between py-2 px-4 rounded-xl hover:bg-core-white duration-300 transition-colors ${
+                  !isMobileView && activeSection === section && "font-semibold"
                 }`}
               >
                 {capitalize(section)}
@@ -101,7 +99,7 @@ const ProfileLayout = ({ sections }: Props) => {
             <button
               disabled={isLoading}
               onClick={handleLogout}
-              className="py-2 px-4 rounded-md text-start hover:text-core-dark hover:bg-core-white transition-colors"
+              className="py-2 px-4 rounded-xl text-start hover:bg-core-white duration-300 transition-colors"
             >
               Log out
             </button>
@@ -111,7 +109,7 @@ const ProfileLayout = ({ sections }: Props) => {
           <Outlet />
         </main>
       </div>
-    </>
+    </div>
   );
 };
 

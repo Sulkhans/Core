@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   useGetProductByIdQuery,
   useGetRandomProductsQuery,
@@ -15,12 +15,12 @@ import {
 import { addToCart } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import ProductSection from "../components/ProductSection";
+import { Pagination } from "swiper/modules";
 //@ts-ignore
 import "swiper/css";
 //@ts-ignore
-import "swiper/css/navigation";
+import "swiper/css/pagination";
 import Cart from "../assets/cart.svg?react";
 import Heart from "../assets/heart.svg?react";
 
@@ -51,10 +51,11 @@ const Product = () => {
     }
   };
 
+  const [activeIndex, setActiveIndex] = useState(0);
   const swiperRef = useRef<SwiperRef>(null);
   const handleSlideTo = (i: number) => {
     if (swiperRef.current) {
-      swiperRef.current.swiper.slideTo(i);
+      swiperRef.current.swiper.slideToLoop(i);
     }
   };
 
@@ -72,44 +73,46 @@ const Product = () => {
         <div className="flex items-center justify-center gap-2 flex-col-reverse sm:flex-row sm:gap-12 lg:gap-6 xl:gap-8">
           <div className="flex justify-center gap-4 sm:flex-col">
             {product.images.map((img: string, i: number) => (
-              <img
+              <div
                 key={i}
-                src={BASE_URL + img}
-                draggable={false}
-                onClick={() => handleSlideTo(i)}
-                className="w-20 aspect-square p-2 rounded-md border-2 border-[#f1f5f9] select-none cursor-pointer"
-              />
+                className={` ${
+                  activeIndex === i ? "border-core-main" : "border-transparent"
+                } size-20 p-2 border-2 rounded-xl content-center select-none cursor-pointer transition-colors`}
+              >
+                <img
+                  src={BASE_URL + img}
+                  draggable={false}
+                  onClick={() => handleSlideTo(i)}
+                />
+              </div>
             ))}
           </div>
           <Swiper
             ref={swiperRef}
-            navigation={true}
-            modules={[Navigation]}
+            pagination={true}
+            loop={true}
+            modules={[Pagination]}
+            onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
             className="w-full max-w-xs sm:max-w-sm xl:max-w-md !mx-0 relative"
           >
             {product.images.map((img: string) => (
               <SwiperSlide key={img}>
-                <img
-                  src={BASE_URL + img}
-                  draggable={false}
-                  className="p-8 lg:p-12 aspect-square select-none"
-                />
+                <div className="p-8 lg:p-12 aspect-square content-center select-none">
+                  <img src={BASE_URL + img} draggable={false} />
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
       </section>
-      <section className="mt-6 lg:mt-0">
-        <h1 className="font-medium text-balance text-3xl">
-          {product.brand !== product.name.split(" ")[0] && product.brand}{" "}
-          {product.name}
-        </h1>
-        <div className="mt-2 mb-6 sm:mb-2 sm:flex justify-between items-center">
-          <p className="font-semibold font-sintony text-2xl mb-4 sm:mb-0">
+      <section className="mt-6 lg:mt-4">
+        <h1 className="font-medium text-balance text-3xl">{product.name}</h1>
+        <div className="mb-6 sm:mb-0 sm:flex justify-between">
+          <p className="font-semibold font-sintony text-[26px]">
             <span className="mr-0.5">$</span>
             {product.price}
           </p>
-          <div className="flex gap-4">
+          <div className="flex gap-4 mt-4">
             <button onClick={handleFavorite}>
               <Heart
                 className={`${isFavorite && "fill-core-main"} stroke-core-main`}
@@ -124,7 +127,7 @@ const Product = () => {
             </button>
           </div>
         </div>
-        <h2 className="mb-2 text-lg font-semibold font-sintony text-core-main">
+        <h2 className="mb-2 text-lg font-semibold text-core-main">
           Specifications
         </h2>
         <div className="max-h-[18rem] overflow-y-auto">
@@ -133,8 +136,8 @@ const Product = () => {
               {Object.entries(product.details).map(([key, value]) =>
                 value ? (
                   <tr key={key} className="*:px-4 *:py-3.5 even:bg-core-white">
-                    <td className="rounded-l-full">{format(key)}</td>
-                    <td className="rounded-r-full">
+                    <td className="rounded-l-lg">{format(key)}</td>
+                    <td className="rounded-r-lg">
                       {typeof value === "boolean"
                         ? value
                           ? "Yes"

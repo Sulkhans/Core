@@ -134,12 +134,16 @@ const NewProduct = () => {
       />
       <div className="flex flex-wrap justify-center gap-4 md:gap-6 my-6">
         {base?.images.map((image, i) => (
-          <img
+          <div
             key={i}
-            src={BASE_URL + image}
-            className="w-[9rem] md:w-[13rem] aspect-square cursor-pointer"
             onClick={() => handleImageDelete(image)}
-          />
+            className="size-[9rem] md:size-[13rem] content-center cursor-pointer"
+          >
+            <img
+              src={BASE_URL + image}
+              className="max-w-[9rem] max-h-[9rem] md:max-w-[13rem] md:max-h-[13rem]"
+            />
+          </div>
         ))}
       </div>
       <div className="flex flex-col w-full gap-1 mt-4">
