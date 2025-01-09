@@ -6,6 +6,7 @@ import ProductCard from "../components/ProductCard";
 import { ProductBaseType } from "../types/types";
 import Arrow from "../assets/chevron.svg?react";
 import Params from "../assets/params.svg?react";
+import Loader from "../components/Loader";
 
 const Category = () => {
   const { category } = useParams();
@@ -30,7 +31,7 @@ const Category = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const { data } = useGetProductsQuery({
+  const { data, isLoading } = useGetProductsQuery({
     category: category!,
     params: searchParams.toString(),
   });
@@ -49,7 +50,9 @@ const Category = () => {
     window.scrollTo(0, 0);
   };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <main className="flex flex-col md:flex-row gap-8 mb-4">
       {isFilterVisible && (
         <Filter

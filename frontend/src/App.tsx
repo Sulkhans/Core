@@ -38,6 +38,7 @@ const App = () => {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/product/:id" element={<Product />} />
+              <Route path="/category/:category" element={<Category />} />
               <Route element={<PrivateRoute />}>
                 <Route
                   path="user"
@@ -82,7 +83,6 @@ const App = () => {
                   <Route path="orders" element={<Orders />} />
                 </Route>
               </Route>
-              <Route path="/:category" element={<Category />} />
               <Route path="*" element={<ErrorPage />} />
             </Route>
           </Routes>
