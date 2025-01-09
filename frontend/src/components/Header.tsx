@@ -7,12 +7,14 @@ import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
+import Navigation from "./Navigation";
 
 type Props = {
   openAuthModal: () => void;
 };
 
 const Header = ({ openAuthModal }: Props) => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const { userInfo } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const navigateTo = () =>
@@ -27,10 +29,10 @@ const Header = ({ openAuthModal }: Props) => {
 
   return (
     <header className="mb-2">
-      <div className="w-full max-w-7xl h-28 sm:h-16 content-center space-y-2 px-4 sm:px-6 mx-auto">
+      <div className="relative w-full max-w-7xl h-28 sm:h-16 content-center space-y-2 px-4 sm:px-6 mx-auto">
         <div className="flex items-center justify-between">
           <div className="flex gap-4">
-            <button>
+            <button onClick={() => setIsNavOpen(!isNavOpen)}>
               <Menu className="stroke-core-main hover:stroke-core-dark transition-colors" />
             </button>
             <h1
@@ -42,10 +44,10 @@ const Header = ({ openAuthModal }: Props) => {
           </div>
           {width >= 640 && <SearchBar />}
           <div className="flex gap-4">
-            <button>
+            <button onClick={() => navigate("/wishlist")}>
               <Heart className="stroke-core-main hover:stroke-core-dark transition-colors" />
             </button>
-            <button>
+            <button onClick={() => navigate("/cart")}>
               <Cart className="stroke-core-main hover:stroke-core-dark transition-colors" />
             </button>
             <button onClick={userInfo ? navigateTo : openAuthModal}>
@@ -54,6 +56,7 @@ const Header = ({ openAuthModal }: Props) => {
           </div>
         </div>
         {width < 640 && <SearchBar />}
+        {isNavOpen && <Navigation close={() => setIsNavOpen(false)} />}
       </div>
     </header>
   );
