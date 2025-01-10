@@ -21,7 +21,7 @@ const OrderItems = ({ items }: Props) => {
           >
             <img
               src={BASE_URL + item.images[0]}
-              className="size-[4.5rem] bg-white p-1.5 rounded-lg"
+              className="size-[4.5rem] p-1.5"
             />
             <div className="font-semibold">
               <h2 className="font-semibold text-pretty line-clamp-2">

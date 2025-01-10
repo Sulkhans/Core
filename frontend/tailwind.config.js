@@ -9,9 +9,9 @@ export default {
       },
       colors: {
         core: {
-          main: "#0071dc",
-          dark: "#0057a9",
-          white: "#f8fafc",
+          main: "#0075D5",
+          dark: "#0065B8",
+          white: "#fcfdfe",
         },
       },
     },

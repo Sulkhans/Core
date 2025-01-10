@@ -28,7 +28,7 @@ const Search = () => {
           <Button
             value="Load More"
             onClick={() => setLimit(limit + 20)}
-            className="block mx-auto my-8 px-4 text-sm"
+            className="block mx-auto mt-16 mb-8 px-4 text-sm"
           />
         )}
       </main>

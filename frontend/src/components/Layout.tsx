@@ -16,7 +16,7 @@ const Layout = () => {
       <Header openAuthModal={openAuthModal} />
       <AuthModal isOpen={authModal} close={closeAuthModal} />
       <div className="max-w-7xl content-center mx-auto">
-        <div className="px-4 sm:px-6">
+        <div className="px-4 sm:px-6 min-h-[calc(100vh-70px)]">
           <Outlet context={{ openAuthModal }} />
         </div>
       </div>

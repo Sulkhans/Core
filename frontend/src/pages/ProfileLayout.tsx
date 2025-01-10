@@ -58,7 +58,7 @@ const ProfileLayout = ({ sections }: Props) => {
     str.charAt(0).toUpperCase() + str.slice(1);
 
   return (
-    <div className="max-h-[calc(100vh-120px)] sm:max-h-none overflow-hidden">
+    <div className={`${isSidebarVisible && "h-screen overflow-hidden"}`}>
       {isMobileView && !isSidebarVisible ? (
         <button
           onClick={() => setIsSidebarVisible(true)}

@@ -130,28 +130,30 @@ const Product = () => {
         <h2 className="mb-2 text-lg font-semibold text-core-main">
           Specifications
         </h2>
-        <div className="max-h-[18rem] overflow-y-auto">
-          <table className="w-full text-sm">
-            <tbody>
-              {Object.entries(product.details).map(([key, value]) =>
-                value ? (
-                  <tr key={key} className="*:px-4 *:py-3.5 even:bg-core-white">
-                    <td className="rounded-l-lg">{format(key)}</td>
-                    <td className="rounded-r-lg">
-                      {typeof value === "boolean"
-                        ? value
-                          ? "Yes"
-                          : "No"
-                        : String(value)}
-                    </td>
-                  </tr>
-                ) : null
-              )}
-            </tbody>
-          </table>
+        <div className="font-medium rounded-xl bg-core-white">
+          <div className="max-h-[18rem] overflow-y-auto scroll mr-3 ">
+            <table className="w-full text-sm">
+              <tbody>
+                {Object.entries(product.details).map(([key, value]) =>
+                  value ? (
+                    <tr key={key} className="*:px-6 *:py-3.5">
+                      <td className="rounded-l-lg">{format(key)}</td>
+                      <td className="rounded-r-lg">
+                        {typeof value === "boolean"
+                          ? value
+                            ? "Yes"
+                            : "No"
+                          : String(value)}
+                      </td>
+                    </tr>
+                  ) : null
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
-      <div className="overflow-hidden lg:col-span-2 my-6 lg:mt-2">
+      <div className="overflow-hidden lg:col-span-2 lg:mt-4">
         <ProductSection heading="Discover" products={randomProducts} />
       </div>
     </main>
